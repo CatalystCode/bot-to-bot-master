@@ -101,14 +101,14 @@ app.post('/api/messages', (req, res, next) => {
       if (err) {
         console.error(`error from sub bot: ${err}`);
         // use the botbuilder to send an error message to the user using his address
-        res.end();
+        return res.end();
       }
 
       // pipe the response from the sub bot to the user
       // this is the place where we can intercept returning messages from the sub-bot
       // and modify / act upon them before returning back to the user.
       // currently just piping back to the client
-      subBotRes.pipe(res);
+      return subBotRes.pipe(res);
     });
   }
   else
