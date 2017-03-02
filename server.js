@@ -75,7 +75,7 @@ app.post('/api/messages', (req, res, next) => {
   if (req.body.text.startsWith('bye') && userConversation.redirect) {
      bot.send(new builder.Message()
         .address(userConversation.address)
-        .text(`_stopping redirecting messages from slave bot: ${subBotEndpoint}_`));
+        .text(`_(master bot resumed control)_`));
     delete userConversation.redirect;
   }
 

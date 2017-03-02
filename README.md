@@ -23,7 +23,7 @@ This is an example for a master bot that can route user messages to other extern
 
 * To stop routing the messages to the slave bot and return control to the master bot, type `bye`. You should see that you got back to the next step in the dialog of the master bot.
 
-* if you type `slave` again, you'll continue from the last step that you left the slave bot before resuming control to the master bot.
+* If you type `slave` again, you'll continue from the last step that you left the slave bot before resuming control to the master bot.
 
 
 
