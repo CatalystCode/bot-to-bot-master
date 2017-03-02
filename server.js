@@ -30,35 +30,20 @@ var connector = new builder.ChatConnector({
   appPassword: config.get('BOT_APP_PASSWORD') 
 });
 
-var bot = new builder.UniversalBot(connector);
+var bot = new builder.UniversalBot(connector, {
+  storage: new builder.MemoryBotStorage()
+});
 
 var i = 0;
 bot.dialog('/', [
   (session, args, next) => {
-    builder.Prompts.text(session, `MasterBot: iteration:${i} step 1, enter something....`);
+    builder.Prompts.text(session, `** -MasterBot- **: step ${i++}, enter something....`);
   },
   (session, args, next) => {
-    session.send(`you typed ${args.response}`);
-    builder.Prompts.text(session, `MasterBot: iteration:${i} step 2, enter something....`);
-  },
-  (session, args, next) => {
-    session.send(`you typed ${args.response}`);
-    builder.Prompts.text(session, `MasterBot: iteration:${i} step 3, enter something....`);
-  },
-  (session, args, next) => {
-    session.send(`you typed ${args.response}`);
-    builder.Prompts.text(session, `MasterBot: iteration:${i} step 4, enter something....`);
-  },
-  (session, args, next) => {
-    session.send(`you typed ${args.response}`);
-    builder.Prompts.text(session, `MasterBot: iteration:${i} step 5, enter something....`);
-  },
-  session => {
-    i++;
+    //session.send(`you typed ${args.response}`);
     session.replaceDialog('/', 0);
   }
 ]);
-
 
 var conversationRoutes = {};
 
@@ -69,9 +54,8 @@ app.post('/api/messages', (req, res, next) => {
   if (!req.body || !req.body.text)
     return next();
 
-  console.log('headers:');
-  Object.keys(req.headers).forEach(header => console.log(`${header} = ${req.headers[header]}`));
-  console.log(`body: ${JSON.stringify(req.body, true, 2)}`);
+  console.log(`headers:\n${JSON.stringify(req.headers, true, 2)}\n\n`);
+  console.log(`body:\n${JSON.stringify(req.body, true, 2)}`);
 
   // if in the middle of being redirected to the sub bot and the user types bye,
   // we will stop redirecting messages to the sub bot and continue with the master bot
