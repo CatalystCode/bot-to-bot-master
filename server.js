@@ -169,7 +169,7 @@ app.post('/api/messages', (req, res, next) => {
             console.log(`body: ${JSON.stringify(data, 2, true)}`);
             res.end(data);
           });
-          subBotRes.on('error', () => console.error(err))
+          subBotRes.on('error', err => console.error(err))
 
         })
       })
