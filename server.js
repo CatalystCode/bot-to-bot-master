@@ -59,6 +59,20 @@ bot.dialog('/', [
   }
 ]);
 
+// API for the slave bot to call when it wants to actively return control to the master bot
+app.post('/api/leave/:conversationId', (req, res, next) => {
+  var conversationId = req.params.conversationId;
+  var userConversation = conversations[conversationId];
+  if (!userConversation) return res.end();
+
+  bot.send(new builder.Message()
+          .address(userConversation.address)
+          .text(`_(master bot resumed control)_`));
+
+  delete userConversation.redirect;
+  console.log(`master bot resumed control on conversation Id ${conversationId}`);
+  return res.end();
+});
 
 app.use('/api/messages', bodyParser.json());
 
@@ -89,7 +103,7 @@ app.post('/api/messages', (req, res, next) => {
     // messages to a specific sub-bot.
     if (!userConversation.redirect) {
       userConversation.redirect = {
-        url: subBotConfig.endpoint
+        url: subBotConfig.endpoint + '/api/messages'
       };
 
        bot.send(new builder.Message()
